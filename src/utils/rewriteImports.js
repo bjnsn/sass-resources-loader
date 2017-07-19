@@ -17,7 +17,8 @@ export default (error, file, contents, moduleContext, callback) => {
   const rewritten = contents.replace(importRegexp, (entire, single, double, unquoted) => {
     const oldImportPath = single || double || unquoted;
     const absoluteImportPath = path.join(path.dirname(file), oldImportPath);
-    const newImportPath = path.relative(moduleContext, absoluteImportPath);
+    const relImportPath = path.relative(moduleContext, absoluteImportPath);
+    const newImportPath = relImportPath.split(path.sep).join('/');
 
     logger.debug(`Resources: @import of ${oldImportPath} changed to ${newImportPath}`);
 
